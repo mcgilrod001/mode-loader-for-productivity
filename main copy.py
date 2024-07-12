@@ -41,10 +41,13 @@ def task_packer():
         # NOTE remeber instances[name] is always equal to the last task in the list]
         instances[name] = ctk.CTkFrame(master=main_frame, height=100, width=150, fg_color=("#ffffff", "#363636"))
         instances[name].pack_propagate(False)
-        # NOTE pack propegate stops children from controlling parent frame
-        instances[name].pack_configure(side='right', pady=1)
-        run_config_button = ctk.CTkButton(master=instances[name],width=80, height=80,)
+        # NOTE what the hell does pack propegate do?
+        instances[name].pack_configure(side='top', pady=1)
+        
         # creates check box in frame
+        # checkbox = ctk.CTkCheckBox(master=instances[name], text=task) # make sure name is set to the text entry
+        # checkbox.pack_configure(side="left")
+        
         # places delete button
         place_destroy_button(name)
 
