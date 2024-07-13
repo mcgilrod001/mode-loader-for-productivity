@@ -32,6 +32,8 @@ def place_destroy_button(name):
 def task_packer():
     # formats name, pairs instance name with task name, assigns frame to intances[name]
     # sets that frame to not propogate so it dosnt shrink or expand, packs it, packs the checkbox and desctruction button
+    # TODO relate delete button to file as well
+    # TODO name file same as text entry
     for task in tasks:
         name = f'{task.replace(" ", "_")}'
         
@@ -44,9 +46,7 @@ def task_packer():
         # NOTE what the hell does pack propegate do?
         instances[name].pack_configure(side='top', pady=1)
         
-        # creates check box in frame
-        # checkbox = ctk.CTkCheckBox(master=instances[name], text=task) # make sure name is set to the text entry
-        # checkbox.pack_configure(side="left")
+        # TODO create a big button to run the config
         
         # places delete button
         place_destroy_button(name)
@@ -102,6 +102,10 @@ def new_task_container():
     task_input.pack_configure(side='left', pady=1, fill='both', expand=True)
 
     # submit button
+    # NOTE this will have to be modified
+    # TODO relate submit button to opening new window where you list the tasks and it saves it in  a text file in config,
+    # TODO relate delete button to file as well
+    # TODO name file same as text entry
     submit_button = ctk.CTkButton(master=new_task_frame, height=30, width=30, text="", font=("roboto", 20), command=lambda: add_task_to_tasks(task_input.get())) #send to the list packer
     submit_button.pack_configure(side='right', padx=1, pady= 1)
 
