@@ -1,36 +1,25 @@
-import customtkinter as ctk
-
-
-# class for scrollable expanding scroll frame and head label
+create
 class ScrollableFrame(ctk.CTkScrollableFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         
         # add widgets
-        # self.label = ctk.CTkLabel(self, text="workstation modes", font=("roboto", 20))
-        # self.label.pack_configure(side="top", pady= 10)
-
+        self.label = ctk.CTkLabel(self, text="list", font=("roboto", 20))
+        self.label.pack_configure(side="top", pady= 10)
 
 # destroys and wipes task
 def destroy_single(name): #removes task
     instances[name].destroy()
     tasks.remove(task_instance_pairing[name])
 
-
 # destroys an instance
 def destroy_instance(name): #keeps task
     instances[name].destroy()
-
 
 # places destroy button in individual task frames
 def place_destroy_button(name):
     destroy_button = ctk.CTkButton(master=instances[name], height=30, width=30, text="x", font=("roboto", 20), fg_color=("#ffffff", "#424242"), hover_color='red', command=lambda:destroy_single(name))
     destroy_button.pack_configure(side="right", padx=1, pady=1)
-
-
-def Create_file(name):
-    create_file_window = ctk.CTkToplevel(Root)
-    
 
 # places tasks from task list
 def task_packer():
@@ -43,17 +32,16 @@ def task_packer():
         task_instance_pairing[name] = task
         
         # NOTE remeber instances[name] is always equal to the last task in the list]
-        instances[name] = ctk.CTkFrame(master=main_frame, height=100, width=110, fg_color=("#ffffff", "#363636"))
+        instances[name] = ctk.CTkFrame(master=main_frame, height=30, width=250, fg_color=("#ffffff", "#363636"))
         instances[name].pack_propagate(False)
-        # NOTE pack propegate stops children from controlling parent frame
-        instances[name].pack_configure(side='right', padx=1)
+        instances[name].pack_configure(side='top', pady=1)
         
-        # creates big button which creates config file named as name
-        run_config_button = ctk.CTkButton(master=instances[name],width=80, height=80, command=lambda: Create_file(name))
-        run_config_button.pack(side="left")
+        # creates check box in frame
+        checkbox = ctk.CTkCheckBox(master=instances[name], text=task) # make sure name is set to the text entry
+        checkbox.pack_configure(side="left")
+        
         # places delete button
         place_destroy_button(name)
-
 
 # destroys then repacks everything with the updated task list
 def pack_from_entry():
@@ -61,7 +49,6 @@ def pack_from_entry():
     destroy_instances()
     # repack
     task_packer()
-
 
 # destroys instances and wipes instances for repacking
 def destroy_instances():
@@ -71,13 +58,11 @@ def destroy_instances():
     # ensures instances is clear
     instances = {}
 
-
 # destroys everything
 def destroy_all():
     global instances
     for instance in instances:
         destroy_single(f'{instance}')
-
 
 # add tasks to task list and calls repack function
 def add_task_to_tasks(task_name):
@@ -92,16 +77,15 @@ def add_task_to_tasks(task_name):
         # print(tasks)
         pack_from_entry()
 
-
 # creates and packs container to add new tasks
 def new_task_container():
     # task entry frame
-    new_task_frame = ctk.CTkFrame(master=Root, height=30, width=250, fg_color=("#ffffff", "#363636"))
+    new_task_frame = ctk.CTkFrame(master=main_frame, height=30, width=250, fg_color=("#ffffff", "#363636"))
     new_task_frame.pack_propagate(False)
-    new_task_frame.pack_configure(side="top",pady=5)
+    new_task_frame.pack_configure(side="bottom",pady=1)
     
     # task entry
-    task_input = ctk.CTkEntry(master=new_task_frame, placeholder_text="Add configuration", border_color='#363636')
+    task_input = ctk.CTkEntry(master=new_task_frame, placeholder_text="Add Task", border_color='#363636')
     task_input.pack_configure(side='left', pady=1, fill='both', expand=True)
 
     # submit button
@@ -110,57 +94,23 @@ def new_task_container():
 
 
 
-
-# root setup
-Root = ctk.CTk()
-
-# general config
-ctk.set_default_color_theme('dark-blue')
-ctk.set_appearance_mode('dark')
-Root.geometry("700x300")
-Root.title("workstation modes")
-
-tasks = ['1', 'task', '3'] 
+# task list
+tasks = [] 
 
 # instances dict
 instances = {}
 
-# dict with pairs of task names as keys and corresponding instance names
+# a dict whith the names set as the task names, and the values of those names set as the corresponding instance name.
 task_instance_pairing = {} 
 
 # main frame
-title = ctk.CTkLabel(master=Root, text="workstation modes", font=("roboto", 20))
-title.pack_configure(side="top", pady= 10)
-title.tkraise()
-main_frame =  ScrollableFrame(master=Root, width=300, height = 110, corner_radius=0, fg_color="transparent", orientation = 'horizontal')
-main_frame.pack(fill='x')
-# main_frame.pack_propagate(True)
+main_frame =  ScrollableFrame(width=300, height=500, corner_radius=0, fg_color="transparent")
+main_frame.pack(fill='both', expand=True)
 
 task_packer()
 
 # button to destroy all tasks
+delete_all_button = ctk.CTkButton(master=main_frame, text='Delete All tasks', font=("roboto", 20), fg_color=("#ffffff", "#424242"), hover_color='red',command=lambda:destroy_all())
+delete_all_button.pack_configure(side='bottom', pady=5)
+
 new_task_container()
-delete_all_button = ctk.CTkButton(master=Root, text='Delete All configs', font=("roboto", 20), fg_color=("#ffffff", "#424242"), hover_color='red',command=lambda:destroy_all())
-delete_all_button.pack_configure(side='top', pady=5)
-
-
-
-
-
-
-Root.mainloop()
-"""
-# TODO list
-
-# TODO fix edge case of user putting in a task with an undescore, with the same name as one with a space
-#    EX: task_3, task 3
-#    this tries to force the instances dict, to create two identical keys, which is not allowed in python
-    
-# TODO add a delete when completed function
- 
-# TODO add ability to save task list to file, or some other form of saving method
-
-# TODO add error reporting to app, so the user knows what is going wrong
-
-# dev comments remove in prod
-"""
