@@ -7,8 +7,8 @@ class ScrollableFrame(ctk.CTkScrollableFrame):
         super().__init__(master, **kwargs)
         
         # add widgets
-        self.label = ctk.CTkLabel(self, text="workstation modes", font=("roboto", 20))
-        self.label.pack_configure(side="top", pady= 10)
+        # self.label = ctk.CTkLabel(self, text="workstation modes", font=("roboto", 20))
+        # self.label.pack_configure(side="top", pady= 10)
 
 
 # destroys and wipes task
@@ -42,7 +42,7 @@ def task_packer():
         instances[name] = ctk.CTkFrame(master=main_frame, height=100, width=150, fg_color=("#ffffff", "#363636"))
         instances[name].pack_propagate(False)
         # NOTE pack propegate stops children from controlling parent frame
-        instances[name].pack_configure(side='right', pady=1)
+        instances[name].pack_configure(side='right', padx=1)
         run_config_button = ctk.CTkButton(master=instances[name],width=80, height=80,)
         # creates check box in frame
         # places delete button
@@ -90,9 +90,9 @@ def add_task_to_tasks(task_name):
 # creates and packs container to add new tasks
 def new_task_container():
     # task entry frame
-    new_task_frame = ctk.CTkFrame(master=main_frame, height=30, width=250, fg_color=("#ffffff", "#363636"))
+    new_task_frame = ctk.CTkFrame(master=Root, height=30, width=250, fg_color=("#ffffff", "#363636"))
     new_task_frame.pack_propagate(False)
-    new_task_frame.pack_configure(side="bottom",pady=1)
+    new_task_frame.pack_configure(side="top",pady=5)
     
     # task entry
     task_input = ctk.CTkEntry(master=new_task_frame, placeholder_text="Add configuration", border_color='#363636')
@@ -111,7 +111,7 @@ Root = ctk.CTk()
 # general config
 ctk.set_default_color_theme('dark-blue')
 ctk.set_appearance_mode('dark')
-Root.geometry("300x200")
+Root.geometry("700x300")
 Root.title("workstation modes")
 
 tasks = ['1', 'task', '3'] 
@@ -123,16 +123,19 @@ instances = {}
 task_instance_pairing = {} 
 
 # main frame
-main_frame =  ScrollableFrame(master=Root, width=300, height=500, corner_radius=0, fg_color="transparent")
-main_frame.pack(fill='both', expand=True)
+title = ctk.CTkLabel(master=Root, text="workstation modes", font=("roboto", 20))
+title.pack_configure(side="top", pady= 10)
+title.tkraise()
+main_frame =  ScrollableFrame(master=Root, width=300, height = 110, corner_radius=0, fg_color="transparent", orientation = 'horizontal')
+main_frame.pack(fill='x')
+# main_frame.pack_propagate(True)
 
 task_packer()
 
 # button to destroy all tasks
-delete_all_button = ctk.CTkButton(master=main_frame, text='Delete All tasks', font=("roboto", 20), fg_color=("#ffffff", "#424242"), hover_color='red',command=lambda:destroy_all())
-delete_all_button.pack_configure(side='bottom', pady=5)
-
 new_task_container()
+delete_all_button = ctk.CTkButton(master=Root, text='Delete All configs', font=("roboto", 20), fg_color=("#ffffff", "#424242"), hover_color='red',command=lambda:destroy_all())
+delete_all_button.pack_configure(side='top', pady=5)
 
 
 
