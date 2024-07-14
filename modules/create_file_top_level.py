@@ -1,26 +1,36 @@
 if __name__ == "__main__":
     import customtkinter as ctk 
+    Root = ctk.CTk()
 
-def run_config(config_name)
+
+def create_config(config_name, Root):
+    import customtkinter as ctk 
+    global instances
     create_file_window = ctk.CTkToplevel(Root)
 
 
     # destroys and wipes task
     def destroy_single(name): #removes task
+        global instances
         instances[name].destroy()
         tasks.remove(task_instance_pairing[name])
 
+
     # destroys an instance
     def destroy_instance(name): #keeps task
+        global instances
         instances[name].destroy()
+
 
     # places destroy button in individual task frames
     def place_destroy_button(name):
         destroy_button = ctk.CTkButton(master=instances[name], height=30, width=30, text="x", font=("roboto", 20), fg_color=("#ffffff", "#424242"), hover_color='red', command=lambda:destroy_single(name))
         destroy_button.pack_configure(side="right", padx=1, pady=1)
 
+
     # places tasks from task list
     def task_packer():
+        global instances
         # formats name, pairs instance name with task name, assigns frame to intances[name]
         # sets that frame to not propogate so it dosnt shrink or expand, packs it, packs the checkbox and desctruction button
         for task in tasks:
@@ -39,12 +49,14 @@ def run_config(config_name)
             # places delete button
             place_destroy_button(name)
 
+
     # destroys then repacks everything with the updated task list
     def pack_from_entry():
         # destroy everything for repack
         destroy_instances()
         # repack
         task_packer()
+
 
     # destroys instances and wipes instances for repacking
     def destroy_instances():
@@ -54,11 +66,13 @@ def run_config(config_name)
         # ensures instances is clear
         instances = {}
 
+
     # destroys everything
     def destroy_all():
         global instances
         for instance in instances:
             destroy_single(f'{instance}')
+
 
     # add tasks to task list and calls repack function
     def add_task_to_tasks(task_name):
@@ -73,8 +87,10 @@ def run_config(config_name)
             # print(tasks)
             pack_from_entry()
 
+
     # creates and packs container to add new tasks
     def new_task_container():
+        global instances
         # task entry frame
         new_task_frame = ctk.CTkFrame(master=main_frame, height=30, width=250, fg_color=("#ffffff", "#363636"))
         new_task_frame.pack_propagate(False)
@@ -90,9 +106,10 @@ def run_config(config_name)
 
 
     def get_names():
-        with open(f'configs\{}.txt', 'w') as f: 
+        with open(f'configs/{config_name}.txt', 'w') as f: 
             for task in tasks: print(task, file=f)
         f.close()
+
 
     # task list
     tasks = [] 
@@ -120,4 +137,5 @@ def run_config(config_name)
     submit_all_button.pack_configure(side='bottom', pady=5)
 
     new_task_container()
-
+if __name__ == "__main__":
+    Root.mainloop()

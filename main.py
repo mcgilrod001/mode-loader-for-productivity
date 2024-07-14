@@ -1,11 +1,11 @@
 import customtkinter as ctk
-
-
+from modules.create_file_top_level import create_config
+from modules.app_opener import run_file
+import os 
 # destroys and wipes task
 def destroy_single(name): #removes task
     instances[name].destroy()
     tasks.remove(task_instance_pairing[name])
-
 
 # destroys an instance
 def destroy_instance(name): #keeps task
@@ -17,11 +17,12 @@ def place_destroy_button(name):
     destroy_button = ctk.CTkButton(master=instances[name], height=30, width=30, text="x", font=("roboto", 20), fg_color=("#ffffff", "#424242"), hover_color='red', command=lambda:destroy_single(name))
     destroy_button.pack_configure(side="right", padx=1, pady=1)
 
-
+# pass in 'config_name' because name is used within create_config function
 def Create_file(Config_name):
-    create_file_window = ctk.CTkToplevel(Root)
+    create_config(Config_name, Root)
     
-
+def run_config(name):
+    run_file(file=name)
 # places tasks from task list
 def task_packer():
     # formats name, pairs instance name with task name, assigns frame to intances[name]
@@ -38,8 +39,8 @@ def task_packer():
         # NOTE pack propegate stops children from controlling parent frame
         instances[name].pack_configure(side='right', padx=1)
         
-        # creates big button which creates config file named as name
-        run_config_button = ctk.CTkButton(master=instances[name],width=80, height=80, command=lambda: Create_file(name), text=name)
+        # creates big button which runs a config file
+        run_config_button = ctk.CTkButton(master=instances[name],width=80, height=80, command=lambda: run_config(name), text=name)
         run_config_button.pack(side="left")
         # places delete button
         place_destroy_button(name)
@@ -79,7 +80,7 @@ def add_task_to_tasks(task_name):
         print("task already in task")
     else: #should only pass this check if it isnt already in tasks and isnt blank.
         tasks.append(task_name)
-        # print(tasks)
+        Create_file(Config_name=task_name)
         pack_from_entry()
 
 
@@ -110,7 +111,9 @@ ctk.set_appearance_mode('dark')
 Root.geometry("700x300")
 Root.title("workstation modes")
 
-tasks = [] 
+tasks = []
+for file in os.listdir("configs"):
+    tasks.append(file)
 
 # instances dict
 instances = {}
