@@ -1,16 +1,6 @@
 import customtkinter as ctk
 
 
-# class for scrollable expanding scroll frame and head label
-class ScrollableFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master, **kwargs):
-        super().__init__(master, **kwargs)
-        
-        # add widgets
-        # self.label = ctk.CTkLabel(self, text="workstation modes", font=("roboto", 20))
-        # self.label.pack_configure(side="top", pady= 10)
-
-
 # destroys and wipes task
 def destroy_single(name): #removes task
     instances[name].destroy()
@@ -28,7 +18,7 @@ def place_destroy_button(name):
     destroy_button.pack_configure(side="right", padx=1, pady=1)
 
 
-def Create_file(name):
+def Create_file(Config_name):
     create_file_window = ctk.CTkToplevel(Root)
     
 
@@ -49,7 +39,7 @@ def task_packer():
         instances[name].pack_configure(side='right', padx=1)
         
         # creates big button which creates config file named as name
-        run_config_button = ctk.CTkButton(master=instances[name],width=80, height=80, command=lambda: Create_file(name))
+        run_config_button = ctk.CTkButton(master=instances[name],width=80, height=80, command=lambda: Create_file(name), text=name)
         run_config_button.pack(side="left")
         # places delete button
         place_destroy_button(name)
@@ -105,7 +95,7 @@ def new_task_container():
     task_input.pack_configure(side='left', pady=1, fill='both', expand=True)
 
     # submit button
-    submit_button = ctk.CTkButton(master=new_task_frame, height=30, width=30, text="", font=("roboto", 20), command=lambda: add_task_to_tasks(task_input.get())) #send to the list packer
+    submit_button = ctk.CTkButton(master=new_task_frame, height=30, width=30, text="▲", font=("roboto", 20), command=lambda: add_task_to_tasks(task_input.get())) #send to the list packer
     submit_button.pack_configure(side='right', padx=1, pady= 1)
 
 
@@ -120,7 +110,7 @@ ctk.set_appearance_mode('dark')
 Root.geometry("700x300")
 Root.title("workstation modes")
 
-tasks = ['1', 'task', '3'] 
+tasks = [] 
 
 # instances dict
 instances = {}
@@ -132,7 +122,7 @@ task_instance_pairing = {}
 title = ctk.CTkLabel(master=Root, text="workstation modes", font=("roboto", 20))
 title.pack_configure(side="top", pady= 10)
 title.tkraise()
-main_frame =  ScrollableFrame(master=Root, width=300, height = 110, corner_radius=0, fg_color="transparent", orientation = 'horizontal')
+main_frame =  ctk.CTkScrollableFrame(master=Root, width=300, height = 110, corner_radius=0, fg_color="transparent", orientation = 'horizontal')
 main_frame.pack(fill='x')
 # main_frame.pack_propagate(True)
 
