@@ -109,6 +109,7 @@ def create_config(config_name, Root):
         with open(f'configs/{config_name}.txt', 'w') as f: 
             for task in tasks: print(task, file=f)
         f.close()
+        create_file_window.destroy()
 
 
     # task list

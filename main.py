@@ -2,10 +2,18 @@ import customtkinter as ctk
 from modules.create_file_top_level import create_config
 from modules.app_opener import run_file
 import os 
+
+
 # destroys and wipes task
 def destroy_single(name): #removes task
     instances[name].destroy()
     tasks.remove(task_instance_pairing[name])
+    # removes config file
+    if "." in name:
+        os.remove(f'configs/{name}')
+    else:
+        os.remove(f'configs/{name}.txt')
+        
 
 # destroys an instance
 def destroy_instance(name): #keeps task
@@ -17,12 +25,16 @@ def place_destroy_button(name):
     destroy_button = ctk.CTkButton(master=instances[name], height=30, width=30, text="x", font=("roboto", 20), fg_color=("#ffffff", "#424242"), hover_color='red', command=lambda:destroy_single(name))
     destroy_button.pack_configure(side="right", padx=1, pady=1)
 
+
 # pass in 'config_name' because name is used within create_config function
 def Create_file(Config_name):
     create_config(Config_name, Root)
     
+    
 def run_config(name):
     run_file(file=name)
+    
+
 # places tasks from task list
 def task_packer():
     # formats name, pairs instance name with task name, assigns frame to intances[name]
@@ -67,7 +79,7 @@ def destroy_instances():
 def destroy_all():
     global instances
     for instance in instances:
-        destroy_single(f'{instance}')
+        destroy_single(instance)
 
 
 # add tasks to task list and calls repack function
