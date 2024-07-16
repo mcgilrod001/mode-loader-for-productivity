@@ -155,17 +155,10 @@ delete_all_button.pack_configure(side='top', pady=5)
 
 Root.mainloop()
 """
-# TODO list
-
 # TODO fix edge case of user putting in a task with an undescore, with the same name as one with a space
 #    EX: task_3, task 3
 #    this tries to force the instances dict, to create two identical keys, which is not allowed in python
-    
-# TODO add a delete when completed function
  
-# TODO add ability to save task list to file, or some other form of saving method
-
 # TODO add error reporting to app, so the user knows what is going wrong
 
-# dev comments remove in prod
 """
